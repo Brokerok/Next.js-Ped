@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "@heroui/styles"; 
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes rotate-cube {
+  0%   { transform: rotateX(0deg)   rotateY(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+.cube-scene {
+  perspective: 600px;
+  width: 160px;
+  height: 160px;
+}
+
+.cube {
+  width: 160px;
+  height: 160px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: rotate-cube 6s linear infinite;
+}
+
+.cube-face {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border: 2px solid rgba(139, 92, 246, 0.7);
+  background: rgba(139, 92, 246, 0.08);
+  backdrop-filter: blur(2px);
+}
+
+.cube-face--front  { transform: translateZ(80px); }
+.cube-face--back   { transform: rotateY(180deg)  translateZ(80px); }
+.cube-face--left   { transform: rotateY(-90deg)  translateZ(80px); }
+.cube-face--right  { transform: rotateY(90deg)   translateZ(80px); }
+.cube-face--top    { transform: rotateX(90deg)   translateZ(80px); }
+.cube-face--bottom { transform: rotateX(-90deg)  translateZ(80px); }
