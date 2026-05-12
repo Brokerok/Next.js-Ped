@@ -1,0 +1,75 @@
+{
+  "home": {
+    "badge": "Пет-проєкт · Next.js 16",
+    "title_prefix": "Будуй швидше з",
+    "description": "Невеликий майданчик для вивчення Next.js, React 19 та HeroUI. Чистий, швидкий і готовий до твоєї наступної ідеї.",
+    "cta_start": "Почати",
+    "cta_profile": "Мій профіль",
+    "cta_login": "Увійти",
+    "features": [
+      {
+        "icon": "⚡",
+        "title": "Швидкий за замовчуванням",
+        "description": "Серверні компоненти стримують HTML прямо у браузер — без очікування JS для рендерингу сторінки."
+      },
+      {
+        "icon": "🧩",
+        "title": "Композиційний UI",
+        "description": "HeroUI надає доступні компоненти з темами, які добре працюють з Tailwind v4."
+      },
+      {
+        "icon": "🔌",
+        "title": "Типобезпечні дані",
+        "description": "Drizzle ORM та Postgres підключені й готові до реальних функцій."
+      }
+    ]
+  },
+  "about": {
+    "title": "Про проєкт",
+    "back": "← На головну",
+    "body": "Це пет-проєкт для вивчення Next.js 16, React 19 та сучасної фронтенд-екосистеми. Досліджує серверні компоненти, автентифікацію, інтернаціоналізацію та App Router. Побудований на HeroUI, Drizzle ORM та PostgreSQL.",
+    "cta": "← Назад на головну"
+  },
+  "profile": {
+    "back": "← На головну",
+    "logout": "Вийти",
+    "skills_title": "Стек",
+    "about_title": "Про себе"
+  },
+  "auth": {
+    "login_title": "Вхід",
+    "login_subtitle": "Немає облікового запису?",
+    "login_register_link": "Зареєструватися",
+    "signup_title": "Створити акаунт",
+    "signup_subtitle": "Вже є акаунт?",
+    "signup_login_link": "Увійти",
+    "name_label": "Ім'я",
+    "name_placeholder": "Твоє ім'я",
+    "email_label": "Email",
+    "password_label": "Пароль",
+    "password_placeholder": "Мін. 8 символів",
+    "cta_login": "Увійти",
+    "cta_signup": "Зареєструватися",
+    "cta_loading_login": "Вхід…",
+    "cta_loading_signup": "Створення акаунту…",
+    "error_name": "Ім'я має містити не менше 2 символів.",
+    "error_email": "Введіть коректний email.",
+    "error_password": "Пароль має бути не менше 8 символів.",
+    "error_email_taken": "Користувач з таким email вже існує.",
+    "error_credentials": "Невірний email або пароль."
+  },
+  "not_found": {
+    "title": "Сторінку не знайдено",
+    "description": "Такої сторінки не існує. Можливо, її було видалено або адреса введена неправильно.",
+    "cta": "На головну"
+  },
+  "error": {
+    "title": "Щось пішло не так",
+    "description": "Сталася непередбачена помилка. Спробуй ще раз або поверніться на головну.",
+    "retry": "Спробувати знову",
+    "home": "На головну"
+  },
+  "footer": {
+    "about": "Про проєкт"
+  }
+}

@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const session = await auth();
-  return {
-    title: session?.user?.name ? `${session.user.name}` : "Профиль",
-  };
-}
+import { getDictionary, hasLocale, type Locale } from "../dictionaries";
 import { pluralize } from "@my-app/utils";
-import ProfileEditor from "../components/ProfileEditor";
-import { logout } from "../actions/auth";
+import ProfileEditor from "../../components/ProfileEditor";
+import { logout } from "../../actions/auth";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const session = await auth();
+  return { title: session?.user?.name ?? "Profile" };
+}
 
 const stats = [
   { n: 3,   forms: ["проект",    "проекта",    "проектов"]    as const },
@@ -30,40 +33,35 @@ const skills = [
   { name: "Git",          color: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300" },
 ];
 
-export default async function ProfilePage() {
-  const session = await auth();
-  if (!session?.user) redirect("/login");
+export default async function ProfilePage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
 
-  const name = session.user.name ?? "Пользователь";
+  const locale = lang as Locale;
+  const [session, d] = await Promise.all([auth(), getDictionary(locale)]);
+  if (!session?.user) redirect(`/${locale}/login`);
+
+  const name = session.user.name ?? "User";
   const email = session.user.email ?? "";
-  const initials = name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  const initials = name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2);
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-12">
-      {/* Back link + logout */}
       <div className="flex items-center justify-between mb-10">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm text-foreground/50 hover:text-foreground transition-colors"
-        >
-          ← На главную
+        <Link href={`/${locale}`} className="inline-flex items-center gap-1.5 text-sm text-foreground/50 hover:text-foreground transition-colors">
+          {d.profile.back}
         </Link>
         <form action={logout}>
-          <button
-            type="submit"
-            className="text-sm text-foreground/50 hover:text-red-500 transition-colors"
-          >
-            Выйти
+          <button type="submit" className="text-sm text-foreground/50 hover:text-red-500 transition-colors">
+            {d.profile.logout}
           </button>
         </form>
       </div>
 
-      {/* Avatar + name */}
       <div className="flex items-center gap-5 mb-8">
         <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-fuchsia-500 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
           {initials}
@@ -74,35 +72,26 @@ export default async function ProfilePage() {
         </div>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-8">
         {stats.map((s) => (
-          <div
-            key={s.forms[0]}
-            className="rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] p-4 text-center"
-          >
+          <div key={s.forms[0]} className="rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] p-4 text-center">
             <p className="text-2xl font-bold">{s.n}</p>
             <p className="text-xs text-foreground/50 mt-0.5">{pluralize(s.n, s.forms)}</p>
           </div>
         ))}
       </div>
 
-      {/* Bio */}
       <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] p-6 mb-6">
         <ProfileEditor initialBio="Самоучка, несколько лет пишу на Python и Django. Сейчас изучаю Next.js и фронтенд через этот pet project." />
       </div>
 
-      {/* Skills */}
       <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] p-6">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground/50 mb-4">
-          Стек
+          {d.profile.skills_title}
         </h2>
         <div className="flex flex-wrap gap-2">
           {skills.map((skill) => (
-            <span
-              key={skill.name}
-              className={`px-3 py-1 rounded-full text-sm font-medium ${skill.color}`}
-            >
+            <span key={skill.name} className={`px-3 py-1 rounded-full text-sm font-medium ${skill.color}`}>
               {skill.name}
             </span>
           ))}

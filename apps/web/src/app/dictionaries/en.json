@@ -1,0 +1,75 @@
+{
+  "home": {
+    "badge": "Pet project · Next.js 16",
+    "title_prefix": "Build faster with",
+    "description": "A small playground for learning Next.js, React 19 and HeroUI. Clean, fast and ready for your next idea.",
+    "cta_start": "Get started",
+    "cta_profile": "View profile",
+    "cta_login": "Sign in",
+    "features": [
+      {
+        "icon": "⚡",
+        "title": "Fast by default",
+        "description": "Server components stream HTML straight to the browser — no waiting on JS to render the page."
+      },
+      {
+        "icon": "🧩",
+        "title": "Composable UI",
+        "description": "HeroUI gives you accessible, themeable components that play nicely with Tailwind v4."
+      },
+      {
+        "icon": "🔌",
+        "title": "Type-safe data",
+        "description": "Drizzle ORM and Postgres are wired up, ready for real features when you need them."
+      }
+    ]
+  },
+  "about": {
+    "title": "About",
+    "back": "← Back to home",
+    "body": "This is a pet project for learning Next.js 16, React 19, and the modern frontend ecosystem. It explores server components, authentication, internationalization, and the App Router. Built with HeroUI, Drizzle ORM, and PostgreSQL.",
+    "cta": "← Back to Home"
+  },
+  "profile": {
+    "back": "← Back to home",
+    "logout": "Sign out",
+    "skills_title": "Stack",
+    "about_title": "About"
+  },
+  "auth": {
+    "login_title": "Sign in",
+    "login_subtitle": "No account?",
+    "login_register_link": "Sign up",
+    "signup_title": "Create account",
+    "signup_subtitle": "Already have an account?",
+    "signup_login_link": "Sign in",
+    "name_label": "Name",
+    "name_placeholder": "Your name",
+    "email_label": "Email",
+    "password_label": "Password",
+    "password_placeholder": "Min. 8 characters",
+    "cta_login": "Sign in",
+    "cta_signup": "Create account",
+    "cta_loading_login": "Signing in…",
+    "cta_loading_signup": "Creating account…",
+    "error_name": "Name must be at least 2 characters.",
+    "error_email": "Enter a valid email.",
+    "error_password": "Password must be at least 8 characters.",
+    "error_email_taken": "A user with this email already exists.",
+    "error_credentials": "Invalid email or password."
+  },
+  "not_found": {
+    "title": "Page not found",
+    "description": "This page doesn't exist. It may have been removed or the address is incorrect.",
+    "cta": "Back to home"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Try again or go back to the home page.",
+    "retry": "Try again",
+    "home": "Back to home"
+  },
+  "footer": {
+    "about": "About"
+  }
+}
