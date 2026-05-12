@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@heroui/react";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "About this project.",
+};
 
 export default function About() {
   return (

@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const session = await auth();
+  return {
+    title: session?.user?.name ? `${session.user.name}` : "Профиль",
+  };
+}
 import { pluralize } from "@my-app/utils";
 import ProfileEditor from "../components/ProfileEditor";
 import { logout } from "../actions/auth";
