@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { Button, Card } from "@heroui/react";
 import Counter from "./components/Counter";
+import { auth } from "@/auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
+
   return (
     <main className="flex-1">
       {/* HERO */}
@@ -45,11 +49,19 @@ export default function Home() {
                 Get started
               </Button>
             </Link>
-            <Link href="/profile">
-              <Button variant="outline" size="lg">
-                View profile
-              </Button>
-            </Link>
+            {isLoggedIn ? (
+              <Link href="/profile">
+                <Button variant="outline" size="lg">
+                  View profile
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <Button variant="outline" size="lg">
+                  Войти
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </section>
