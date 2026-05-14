@@ -104,6 +104,21 @@
       "error_excerpt_too_long": "Excerpt must be 280 characters or less.",
       "error_content_too_short": "Content must be at least 20 characters.",
       "error_cover_invalid": "Cover must be a valid URL."
+    },
+    "like": "Like",
+    "unlike": "Unlike",
+    "likes_count": "likes",
+    "sign_in_to_like": "Sign in to like",
+    "comments": {
+      "title": "Comments",
+      "empty": "No comments yet. Be the first.",
+      "placeholder": "Share your thoughts…",
+      "submit": "Post comment",
+      "submit_loading": "Posting…",
+      "sign_in_cta": "Sign in to comment",
+      "delete": "Delete",
+      "error_too_short": "Comment must be at least 2 characters.",
+      "error_too_long": "Comment must be 1000 characters or less."
     }
   }
 }

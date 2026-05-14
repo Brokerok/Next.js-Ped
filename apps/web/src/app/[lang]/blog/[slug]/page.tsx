@@ -2,12 +2,14 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { eq } from "drizzle-orm";
+import { and, count, desc, eq } from "drizzle-orm";
 import { auth } from "@/auth";
 import { db } from "@/src/db";
-import { postsTable } from "@/src/db/schema";
+import { commentsTable, likesTable, postsTable } from "@/src/db/schema";
 import { getDictionary, hasLocale, locales, type Locale } from "../../dictionaries";
 import { deletePost } from "../../../actions/posts";
+import LikeButton from "../../../components/LikeButton";
+import CommentSection from "../../../components/CommentSection";
 
 export async function generateStaticParams() {
   const posts = await db
@@ -59,6 +61,28 @@ export default async function PostPage({
 
   if (!post) notFound();
   const isAuthor = session?.user?.id === post.authorId;
+  const userId = session?.user?.id;
+
+  const [[likeCountRow], myLike, comments] = await Promise.all([
+    db
+      .select({ value: count() })
+      .from(likesTable)
+      .where(eq(likesTable.postId, post.id)),
+    userId
+      ? db
+          .select({ postId: likesTable.postId })
+          .from(likesTable)
+          .where(and(eq(likesTable.userId, userId), eq(likesTable.postId, post.id)))
+          .limit(1)
+      : Promise.resolve([]),
+    db.query.commentsTable.findMany({
+      where: eq(commentsTable.postId, post.id),
+      with: { author: { columns: { name: true } } },
+      orderBy: [desc(commentsTable.createdAt)],
+    }),
+  ]);
+  const likeCount = likeCountRow?.value ?? 0;
+  const likedByMe = myLike.length > 0;
 
   const dateFormatter = new Intl.DateTimeFormat(locale, {
     year: "numeric",
@@ -117,6 +141,33 @@ export default async function PostPage({
         <div className="prose-base flex flex-col gap-5 text-foreground/85 leading-relaxed whitespace-pre-line">
           {post.content}
         </div>
+
+        <div className="mt-10 pt-6 border-t border-black/5 dark:border-white/10">
+          <LikeButton
+            postId={post.id}
+            slug={post.slug}
+            lang={locale}
+            initialLiked={likedByMe}
+            initialCount={likeCount}
+            isLoggedIn={!!userId}
+            labels={{
+              like: d.blog.like,
+              unlike: d.blog.unlike,
+              sign_in_to_like: d.blog.sign_in_to_like,
+            }}
+          />
+        </div>
+
+        <CommentSection
+          postId={post.id}
+          slug={post.slug}
+          lang={locale}
+          initialComments={comments}
+          currentUser={
+            userId ? { id: userId, name: session?.user?.name ?? null } : null
+          }
+          labels={d.blog.comments}
+        />
       </article>
     </main>
   );

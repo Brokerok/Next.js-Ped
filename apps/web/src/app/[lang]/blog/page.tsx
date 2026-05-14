@@ -2,10 +2,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { desc } from "drizzle-orm";
+import { count, desc } from "drizzle-orm";
 import { auth } from "@/auth";
 import { db } from "@/src/db";
-import { postsTable } from "@/src/db/schema";
+import { likesTable, postsTable } from "@/src/db/schema";
 import { getDictionary, hasLocale, type Locale } from "../dictionaries";
 
 export async function generateMetadata({
@@ -30,14 +30,19 @@ export default async function BlogPage({
   const locale = lang as Locale;
   const d = await getDictionary(locale);
 
-  const [posts, session] = await Promise.all([
+  const [posts, session, likeCounts] = await Promise.all([
     db.query.postsTable.findMany({
       with: { author: { columns: { name: true, image: true } } },
       orderBy: [desc(postsTable.createdAt)],
     }),
     auth(),
+    db
+      .select({ postId: likesTable.postId, value: count() })
+      .from(likesTable)
+      .groupBy(likesTable.postId),
   ]);
   const isLoggedIn = !!session?.user;
+  const likeMap = new Map(likeCounts.map((l) => [l.postId, l.value]));
 
   const dateFormatter = new Intl.DateTimeFormat(locale, {
     year: "numeric",
@@ -94,6 +99,10 @@ export default async function BlogPage({
                   <p className="mt-1.5 text-sm text-foreground/70 line-clamp-2">
                     {post.excerpt}
                   </p>
+                  <div className="mt-2 text-xs text-foreground/50 inline-flex items-center gap-1">
+                    <span>❤️</span>
+                    <span>{likeMap.get(post.id) ?? 0}</span>
+                  </div>
                 </div>
               </Link>
             </li>
