@@ -2,11 +2,12 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { count, desc } from "drizzle-orm";
+import { count, desc, ilike, or } from "drizzle-orm";
 import { auth } from "@/auth";
 import { db } from "@/src/db";
 import { likesTable, postsTable } from "@/src/db/schema";
 import { getDictionary, hasLocale, type Locale } from "../dictionaries";
+import SearchBox from "../../components/SearchBox";
 
 export async function generateMetadata({
   params,
@@ -21,8 +22,10 @@ export async function generateMetadata({
 
 export default async function BlogPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams: Promise<{ q?: string }>;
 }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
@@ -30,8 +33,15 @@ export default async function BlogPage({
   const locale = lang as Locale;
   const d = await getDictionary(locale);
 
+  const { q } = await searchParams;
+  const query = q?.trim() ?? "";
+  const pattern = `%${query}%`;
+
   const [posts, session, likeCounts] = await Promise.all([
     db.query.postsTable.findMany({
+      where: query
+        ? or(ilike(postsTable.title, pattern), ilike(postsTable.excerpt, pattern))
+        : undefined,
       with: { author: { columns: { name: true, image: true } } },
       orderBy: [desc(postsTable.createdAt)],
     }),
@@ -52,23 +62,33 @@ export default async function BlogPage({
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
-      <header className="mb-12 flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight">{d.blog.title}</h1>
-          <p className="mt-3 text-foreground/60">{d.blog.subtitle}</p>
+      <header className="mb-10">
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight">{d.blog.title}</h1>
+            <p className="mt-3 text-foreground/60">{d.blog.subtitle}</p>
+          </div>
+          {isLoggedIn && (
+            <Link
+              href={`/${locale}/blog/new`}
+              className="flex-shrink-0 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 text-sm font-semibold transition-colors"
+            >
+              {d.blog.new_post}
+            </Link>
+          )}
         </div>
-        {isLoggedIn && (
-          <Link
-            href={`/${locale}/blog/new`}
-            className="flex-shrink-0 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 text-sm font-semibold transition-colors"
-          >
-            {d.blog.new_post}
-          </Link>
-        )}
+        <SearchBox
+          placeholder={d.blog.search_placeholder}
+          clearLabel={d.blog.search_clear}
+        />
       </header>
 
       {posts.length === 0 ? (
-        <p className="text-foreground/60">{d.blog.empty}</p>
+        <p className="text-foreground/60">
+          {query
+            ? d.blog.no_results.replace("{q}", query)
+            : d.blog.empty}
+        </p>
       ) : (
         <ul className="flex flex-col gap-10">
           {posts.map((post) => (
