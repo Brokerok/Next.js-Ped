@@ -70,6 +70,40 @@
     "home": "На главную"
   },
   "footer": {
-    "about": "О проекте"
+    "about": "О проекте",
+    "blog": "Блог"
+  },
+  "blog": {
+    "title": "Блог",
+    "subtitle": "Заметки об изучении Next.js, React и современной веб-разработки.",
+    "read_more": "Читать дальше →",
+    "back": "← Назад в блог",
+    "by": "автор:",
+    "not_found_title": "Пост не найден",
+    "not_found_body": "Эта статья была удалена или ссылка неверна.",
+    "empty": "Пока нет постов. Создай первый.",
+    "new_post": "Новый пост",
+    "delete": "Удалить",
+    "delete_confirm": "Удалить этот пост?",
+    "new": {
+      "title": "Создать новый пост",
+      "subtitle": "Поделись тем, что узнал.",
+      "field_title": "Заголовок",
+      "field_title_placeholder": "Цепляющий заголовок",
+      "field_excerpt": "Краткое описание",
+      "field_excerpt_placeholder": "Короткое описание для списка постов",
+      "field_content": "Содержимое",
+      "field_content_placeholder": "Текст поста…",
+      "field_cover": "URL обложки",
+      "field_cover_placeholder": "https://… (необязательно)",
+      "submit": "Опубликовать",
+      "submit_loading": "Публикация…",
+      "error_title_too_short": "Заголовок должен быть не менее 3 символов.",
+      "error_title_too_long": "Заголовок должен быть не более 120 символов.",
+      "error_excerpt_too_short": "Описание должно быть не менее 10 символов.",
+      "error_excerpt_too_long": "Описание должно быть не более 280 символов.",
+      "error_content_too_short": "Содержимое должно быть не менее 20 символов.",
+      "error_cover_invalid": "Обложка должна быть корректным URL."
+    }
   }
 }

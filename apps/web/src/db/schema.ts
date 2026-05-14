@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   integer,
   pgTable,
@@ -50,3 +51,30 @@ export const verificationTokensTable = pgTable("verificationToken", {
 }, (vt) => [
   primaryKey({ columns: [vt.identifier, vt.token] }),
 ]);
+
+export const postsTable = pgTable("post", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  excerpt: text("excerpt").notNull(),
+  content: text("content").notNull(),
+  coverImage: text("cover_image"),
+  authorId: text("author_id")
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  posts: many(postsTable),
+}));
+
+export const postsRelations = relations(postsTable, ({ one }) => ({
+  author: one(usersTable, {
+    fields: [postsTable.authorId],
+    references: [usersTable.id],
+  }),
+}));

@@ -70,6 +70,40 @@
     "home": "На головну"
   },
   "footer": {
-    "about": "Про проєкт"
+    "about": "Про проєкт",
+    "blog": "Блог"
+  },
+  "blog": {
+    "title": "Блог",
+    "subtitle": "Нотатки про вивчення Next.js, React та сучасної веброзробки.",
+    "read_more": "Читати далі →",
+    "back": "← Назад до блогу",
+    "by": "автор:",
+    "not_found_title": "Пост не знайдено",
+    "not_found_body": "Цю статтю було видалено або посилання неправильне.",
+    "empty": "Поки немає постів. Створіть перший.",
+    "new_post": "Новий пост",
+    "delete": "Видалити",
+    "delete_confirm": "Видалити цей пост?",
+    "new": {
+      "title": "Створити новий пост",
+      "subtitle": "Поділись тим, що дізнався.",
+      "field_title": "Заголовок",
+      "field_title_placeholder": "Чіпкий заголовок",
+      "field_excerpt": "Короткий опис",
+      "field_excerpt_placeholder": "Короткий опис для списку постів",
+      "field_content": "Зміст",
+      "field_content_placeholder": "Текст поста…",
+      "field_cover": "URL обкладинки",
+      "field_cover_placeholder": "https://… (необов'язково)",
+      "submit": "Опублікувати",
+      "submit_loading": "Публікація…",
+      "error_title_too_short": "Заголовок має бути не менше 3 символів.",
+      "error_title_too_long": "Заголовок має бути не більше 120 символів.",
+      "error_excerpt_too_short": "Опис має бути не менше 10 символів.",
+      "error_excerpt_too_long": "Опис має бути не більше 280 символів.",
+      "error_content_too_short": "Зміст має бути не менше 20 символів.",
+      "error_cover_invalid": "Обкладинка має бути коректним URL."
+    }
   }
 }

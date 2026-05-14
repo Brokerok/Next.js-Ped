@@ -70,6 +70,40 @@
     "home": "Back to home"
   },
   "footer": {
-    "about": "About"
+    "about": "About",
+    "blog": "Blog"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Notes from learning Next.js, React and modern web development.",
+    "read_more": "Read more →",
+    "back": "← Back to blog",
+    "by": "by",
+    "not_found_title": "Post not found",
+    "not_found_body": "This article was removed or the link is wrong.",
+    "empty": "No posts yet. Create the first one.",
+    "new_post": "New post",
+    "delete": "Delete",
+    "delete_confirm": "Delete this post?",
+    "new": {
+      "title": "Create a new post",
+      "subtitle": "Share what you learned.",
+      "field_title": "Title",
+      "field_title_placeholder": "Catchy title",
+      "field_excerpt": "Excerpt",
+      "field_excerpt_placeholder": "Short summary shown on the list page",
+      "field_content": "Content",
+      "field_content_placeholder": "Write your post here…",
+      "field_cover": "Cover image URL",
+      "field_cover_placeholder": "https://… (optional)",
+      "submit": "Publish",
+      "submit_loading": "Publishing…",
+      "error_title_too_short": "Title must be at least 3 characters.",
+      "error_title_too_long": "Title must be 120 characters or less.",
+      "error_excerpt_too_short": "Excerpt must be at least 10 characters.",
+      "error_excerpt_too_long": "Excerpt must be 280 characters or less.",
+      "error_content_too_short": "Content must be at least 20 characters.",
+      "error_cover_invalid": "Cover must be a valid URL."
+    }
   }
 }
