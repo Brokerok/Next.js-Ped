@@ -5,6 +5,7 @@ import { Button, Card } from "@heroui/react";
 import { auth } from "@/auth";
 import { getDictionary, hasLocale, type Locale } from "./dictionaries";
 import Counter from "../components/Counter";
+import Carousel from "../components/Carousel";
 
 export async function generateMetadata({
   params,
@@ -112,6 +113,14 @@ export default async function Home({
         <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02]">
           <Counter />
         </div>
+      </section>
+
+      {/* CAROUSEL */}
+      <section className="mx-auto max-w-4xl px-6 pb-24">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground/40 mb-6 text-center">
+          Tech Stack
+        </h2>
+        <Carousel />
       </section>
 
       {/* FOOTER */}
