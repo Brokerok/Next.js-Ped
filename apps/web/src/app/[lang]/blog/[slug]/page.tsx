@@ -1,15 +1,17 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { and, count, desc, eq } from "drizzle-orm";
+import { and, count, eq } from "drizzle-orm";
 import { auth } from "@/auth";
 import { db } from "@/src/db";
-import { commentsTable, likesTable, postsTable } from "@/src/db/schema";
+import { likesTable, postsTable } from "@/src/db/schema";
 import { getDictionary, hasLocale, locales, type Locale } from "../../dictionaries";
 import { deletePost } from "../../../actions/posts";
 import LikeButton from "../../../components/LikeButton";
-import CommentSection from "../../../components/CommentSection";
+import Comments from "./Comments";
+import CommentsSkeleton from "./CommentsSkeleton";
 
 export async function generateStaticParams() {
   const posts = await db
@@ -63,7 +65,7 @@ export default async function PostPage({
   const isAuthor = session?.user?.id === post.authorId;
   const userId = session?.user?.id;
 
-  const [[likeCountRow], myLike, comments] = await Promise.all([
+  const [[likeCountRow], myLike] = await Promise.all([
     db
       .select({ value: count() })
       .from(likesTable)
@@ -75,11 +77,6 @@ export default async function PostPage({
           .where(and(eq(likesTable.userId, userId), eq(likesTable.postId, post.id)))
           .limit(1)
       : Promise.resolve([]),
-    db.query.commentsTable.findMany({
-      where: eq(commentsTable.postId, post.id),
-      with: { author: { columns: { name: true } } },
-      orderBy: [desc(commentsTable.createdAt)],
-    }),
   ]);
   const likeCount = likeCountRow?.value ?? 0;
   const likedByMe = myLike.length > 0;
@@ -158,16 +155,9 @@ export default async function PostPage({
           />
         </div>
 
-        <CommentSection
-          postId={post.id}
-          slug={post.slug}
-          lang={locale}
-          initialComments={comments}
-          currentUser={
-            userId ? { id: userId, name: session?.user?.name ?? null } : null
-          }
-          labels={d.blog.comments}
-        />
+        <Suspense fallback={<CommentsSkeleton />}>
+          <Comments postId={post.id} slug={post.slug} lang={locale} />
+        </Suspense>
       </article>
     </main>
   );
